@@ -1,0 +1,46 @@
+version: '3.8'
+
+# create network named 'app'
+networks:
+  app:
+
+# create volume named 'app-db'
+volumes:
+  app-db:
+
+# create 2 services
+services:
+  # create service item-db from mongodb with tag '3'
+  item-db:
+    # pull image from docker hub
+    image: mongo:3
+    # set container name to item-db
+    container_name: item-db
+    # always restart container when it stopped
+    restart: always
+    # mount volumes to app-db
+    volumes:
+      - app-db:/data/db
+    # set network to app
+    networks:
+      - app
+
+  #create service item-app from iqbal26/item-app with tag 'v1'
+  item-app:
+    # pull image from docker hub
+    #image: iqbal26/item-app:v1
+    # pull image from GitHub container registry (GitHub package)
+    image: ghcr.io/livoir/item-app:v1
+    # set container name to item-app
+    container_name: item-app
+    # always restart container when it stopped
+    restart: always
+    # set dependency to item-db, so this container will run after item-db is up
+    depends_on:
+      - item-db
+    # publish port 8080 in container and bind to port 80 in host
+    ports:
+      - "80:8080"
+    # set network to app
+    networks:
+      - app

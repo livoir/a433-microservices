@@ -1,0 +1,2 @@
+https://github.com/livoir/a433-microservices/pkgs/container/item-app
+https://ghcr.io/livoir/item-app
