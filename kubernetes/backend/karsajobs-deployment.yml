@@ -9,6 +9,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
+      app: karsajobs
       tier: backend
   template:
     metadata:
@@ -25,7 +26,7 @@ spec:
             - name: APP_PORT
               value: "8080"
             - name: MONGO_HOST
-              value: $(DATA_TIER_SERVICE_HOST)
+              value: "data-tier"
             - name: MONGO_USER
               valueFrom:
                 secretKeyRef:

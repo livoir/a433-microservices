@@ -4,9 +4,12 @@ metadata:
   name: backend-tier
   labels:
     app: karsajobs
+    tier: backend
 spec:
+  type: NodePort
   ports:
-    - port: 8080
+    - nodePort: 30001
+      port: 8080
   selector:
     tier: backend
 
