@@ -8,8 +8,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - nodePort: 30001
-      port: 8080
+    - port: 8080
+      nodePort: 30001
   selector:
     tier: backend
 
