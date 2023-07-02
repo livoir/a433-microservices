@@ -23,7 +23,7 @@ jobs:
         working-directory: ./karsajobs-ui
         run: /bin/hadolint Dockerfile
 
-      - name: build-app-karsajobs
+      - name: build-app-karsajobs-ui
         working-directory: ./karsajobs-ui
         run: bash -eux ./build_push_image_karsajobs-ui.sh
 
