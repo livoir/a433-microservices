@@ -34,5 +34,5 @@ jobs:
 
       - name: build-app-karsajobs
         working-directory: ./karsajobs
-        run: sudo ./build_push_image_karsajobs.sh
+        run: sudo sh ./build_push_image_karsajobs.sh
 
