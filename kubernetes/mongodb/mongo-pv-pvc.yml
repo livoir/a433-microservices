@@ -1,28 +1,52 @@
+# use kubernetes api version v1 to create PersistentVolume
 apiVersion: v1
+# use PersistentVolume object
 kind: PersistentVolume
+# set metadata
 metadata:
+  # set metadata name to data-tier-pv
   name: data-tier-pv
+  # set labels
   labels:
+    # set type to local
     type: local
+# set persistent volume spec
 spec:
+  # set storageClassName to manual
   storageClassName: manual
+  # set capacity
   capacity:
+    # set storage capacity to 20Gi
     storage: 20Gi
+  # set access mode to ReadWriteOnce
   accessModes:
     - ReadWriteOnce
+  # set hostPath to /data/db where the data stored
   hostPath:
     path: "/data/db"
 ---
+# use kubernetes api version v1 to create PersistentVolumeClaim
 apiVersion: v1
+# use object PersistentVolumeClaim
 kind: PersistentVolumeClaim
+# set metadata
 metadata:
+  # set metadata name to data-tier-pv-claim
   name: data-tier-pv-claim
+  # set labels
   labels:
+    # set app to karsajobs
     app: karsajobs
+# set PersistentVolumeClaim spec
 spec:
+  # set storageClassName to manual
   storageClassName: manual
+  # set accessModes to ReadWriteOnce
   accessModes:
     - ReadWriteOnce
+  # set resource to be used
   resources:
+    # request resources
     requests:
+      # request storage size 20Gi
       storage: 20Gi

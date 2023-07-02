@@ -1,24 +1,48 @@
+# use kubernetes api version apps/v1 for deplyoment
 apiVersion: apps/v1
+# use deployment object
 kind: Deployment
+# set metadata
 metadata:
+  # set metadata name to frontend-tier
   name: frontend-tier
+  # set labels
   labels:
+    # set app to karsajobs
     app: karsajobs
+    # set tier to frontend
     tier: frontend
+# set deployment spec
 spec:
+  # set replica to 1
   replicas: 1
+  # attach selector label for object filtering and identified pod with the match labels
   selector:
+    # set matchlabels
     matchLabels:
+      # set app to karsajobs
       app: karsajobs
+      # set tier to frontend
       tier: frontend
+  # create template for deployment in case a pod is destroyed / down
   template:
+    # set metadata for template deployment
     metadata:
+      # set labels to identify pod
       labels:
+        # set app to karsajobs
         app: karsajobs
+        # set tier to frontend
         tier: frontend
+    # set spec fot template deployment
     spec:
+      # use containers
       containers:
+        # set container name to karsajobs-ui for frontend
         - name: karsajobs-ui
+          # pull image from GitHub Registry Container: ghcr.io/livoir/karsajobs-ui:latest
           image: ghcr.io/livoir/karsajobs-ui:latest
+          # set ports
           ports:
+            - # set container port 8000 where the app is running
             - containerPort: 8000

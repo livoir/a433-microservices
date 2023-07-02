@@ -1,38 +1,69 @@
+# use kubernetes api version apps/v1 for deplyoment
 apiVersion: apps/v1
+# use deployment object
 kind: Deployment
+# set metadata
 metadata:
+  # set metadata name to backend-tier
   name: backend-tier
+  # set labels
   labels:
+    # set app to karsajobs
     app: karsajobs
+    # set tier to backend
     tier: backend
+# set deployment spec
 spec:
+  # set replica to 1
   replicas: 1
+  # attach selector label for object filtering and identified pod with the match labels
   selector:
+    # set matchlabels
     matchLabels:
+      # set app to karsajobs
       app: karsajobs
+      # set tier to backend
       tier: backend
+  # create template for deployment in case a pod is destroyed / down
   template:
+    # set metadata for template deployment
     metadata:
+      # set labels to identify pod
       labels:
+        # set app to karsajobs
         app: karsajobs
+        # set tier to backend
         tier: backend
+    # set spec fot template deployment
     spec:
+      # use containers
       containers:
+        # set container name to karsajobs for backend
         - name: karsajobs
+          # pull image from GitHub Registry Container: ghcr.io/livoir/karsajobs:latest
           image: ghcr.io/livoir/karsajobs:latest
+          # set ports
           ports:
+            # set container port 8080 where the app is running
             - containerPort: 8080
+          # set envorinment variable in the pod to be used by the image
           env:
+            # set APP_PORT to 8080
             - name: APP_PORT
               value: "8080"
+            # SET MONGO_HOST to data-tier (use data-tier service name)
             - name: MONGO_HOST
               value: "data-tier"
+            # SET MONGO_USER to authenticate mongodb connection
             - name: MONGO_USER
+              # GET MONGO_USER from secret named data-tier-secret with key MONGO_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
                   key: MONGO_ROOT_USERNAME
                   name: data-tier-secret
+            # SET MONGO_PASS to authenticate mongodb connection
             - name: MONGO_PASS
+              # GET MONGO_PASS from secret named data-tier-secret with key MONGO_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: MONGO_ROOT_PASSWORD
