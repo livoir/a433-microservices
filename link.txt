@@ -1,0 +1,6 @@
+https://ghcr.io/livoir/karsajobs-ui
+https://github.com/livoir/a433-microservices/pkgs/container/karsajobs-ui
+
+https://ghcr.io/livoir/karsajobs
+https://github.com/livoir/a433-microservices/pkgs/container/karsajobs
+
