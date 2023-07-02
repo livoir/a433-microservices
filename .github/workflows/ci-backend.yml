@@ -10,8 +10,8 @@ jobs:
   ci-backend:
     runs-on: ubuntu-latest
     env:
-      GITHUB_USER: ${{secrets.USER}}
-      GITHUB_ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+      GITHUB_USER: '${{ secrets.USER }}'
+      GITHUB_ACCESS_TOKEN: '${{ secrets.ACCESS_TOKEN }}'
 
     steps:
       - uses: actions/checkout@v3
@@ -31,6 +31,9 @@ jobs:
       - name: test-app
         working-directory: ./karsajobs
         run: go test -v -short --count=1 $(go list ./...)
+
+      - name: test
+        run: env
 
       - name: build-app-karsajobs
         working-directory: ./karsajobs
