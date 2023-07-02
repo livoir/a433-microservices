@@ -44,5 +44,5 @@ spec:
           image: ghcr.io/livoir/karsajobs-ui:latest
           # set ports
           ports:
-            - # set container port 8000 where the app is running
+            # set container port 8000 where the app is running
             - containerPort: 8000
