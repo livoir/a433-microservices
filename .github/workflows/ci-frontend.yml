@@ -1,4 +1,4 @@
-name: ci-backend
+name: ci-frontend
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: ["proyek-kedua"]
 
 jobs:
-  ci-backend:
+  ci-frontend:
     runs-on: ubuntu-latest
     env:
       GITHUB_USER: '${{ secrets.USER }}'
@@ -16,23 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.15
-
       - name: Install Hadolint
         run: sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 && sudo chmod +x /bin/hadolint
 
       - name: lint-dockerfile
-        working-directory: ./karsajobs
+        working-directory: ./karsajobs-ui
         run: /bin/hadolint Dockerfile
 
-      - name: test-app
-        working-directory: ./karsajobs
-        run: go test -v -short --count=1 $(go list ./...)
-
       - name: build-app-karsajobs
-        working-directory: ./karsajobs
-        run: bash -eux ./build_push_image_karsajobs.sh
+        working-directory: ./karsajobs-ui
+        run: bash -eux ./build_push_image_karsajobs-ui.sh
 
