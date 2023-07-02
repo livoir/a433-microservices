@@ -1,0 +1,97 @@
+# use kubernetes api version apps/v1 to create Statefulset
+apiVersion: apps/v1
+# use statefulset object
+kind: StatefulSet
+# set metadata
+metadata:
+  # set metadata name to data-tier
+  name: data-tier
+  # set labels
+  labels:
+    # set app to karsajobs
+    app: karsajobs
+    # set tier to data
+    tier: data
+# set statefulset spec
+spec:
+  # attach selector label for object filtering and identified pod with the match labels
+  selector:
+    # set matchlabels
+    matchLabels:
+      # set app to karsajobs
+      app: karsajobs
+      # set tier to data
+      tier: data
+  # set service name to data-tier
+  serviceName: data-tier
+  # set replica to 1
+  replicas: 1
+  # set minimum time to ready to 10 seconds
+  minReadySeconds: 10
+  # create template for statefulset in case a pod is destroyed / down
+  template:
+    # set metadata for template statefulset
+    metadata:
+      # set labels to identify pod
+      labels:
+        # set app to karsajobs
+        app: karsajobs
+        # set tier to data
+        tier: data
+    # set spec fot template statefulset
+    spec:
+      # set termination grace period to 10 second, so the container will shutdown gracefully
+      terminationGracePeriodSeconds: 10
+      # use containers
+      containers:
+        # set container name to mongo
+        - name: mongo
+          # pull image from docker hub mongo:6.0.6
+          image: mongo:6.0.6
+          # set container port to 27017 (default use for mongodb)
+          ports:
+            - containerPort: 27017
+          # set environtment variable for mongodb image
+          env:
+            # set MONGO_INITDB_ROOT_USERNAME_FILE to set mongo root username from file
+            - name: MONGO_INITDB_ROOT_USERNAME_FILE
+              # get username from /etc/mongo-credentials/MONGO_ROOT_USERNAME
+              value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+            # set MONGO_INITDB_ROOT_USERNAME_FILE to set mongo root password from file
+            - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+              # get password from /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+              value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+          # mount volume
+          volumeMounts:
+            # mount /data/db to store the data in cluster
+            - mountPath: /data/db
+              # set mount name to data-tier-persistent-storage
+              name: data-tier-persistent-storage
+            # mount /config to store the configmap in cluster
+            - mountPath: /config
+              # set mount name to data-tier-config-map
+              name: data-tier-config-map
+            # mount /etc/mongo-credentials to store the credentials (username and password for root user mongodb) in cluster
+            - mountPath: /etc/mongo-credentials
+              # set mount name to data-tier-secret-credentials
+              name: data-tier-secret-credentials
+      # set volumes in cluster
+      volumes:
+        # set data-tier-persistent-storage volume
+        - name: data-tier-persistent-storage
+          # set persistent volume claim to claim the storage that has been defined in mongo-pv-pvc
+          persistentVolumeClaim:
+            # use claimName data-tier-pv-claim
+            claimName: data-tier-pv-claim
+        # set data-tier-config-map volume
+        - name: data-tier-config-map
+          # get data from configMap object
+          configMap:
+            # set configMap name to data-tier-config
+            name: data-tier-config
+        # set data-tier-secret-credentials
+        - name: data-tier-secret-credentials
+          # get data from secret object
+          secret:
+            # get secret from data-tier-secret
+            secretName: data-tier-secret

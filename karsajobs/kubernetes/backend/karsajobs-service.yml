@@ -1,0 +1,27 @@
+# use kubernetes api version v1 to create service
+apiVersion: v1
+# use Service object
+kind: Service
+# set metadata
+metadata:
+  # set metadata name to backend-tier
+  name: backend-tier
+  # set labels
+  labels:
+    # set app to karsajobs
+    app: karsajobs
+    # set tier to backend
+    tier: backend
+# set service spec
+spec:
+  # use LoadBalancer, so we can access it from host machine with external IP (in this case localhost / 127.0.0.1)
+  type: LoadBalancer
+  # set port that used by container
+  ports:
+    # set port to 8080
+    - port: 8080
+  # set selector
+  selector:
+    # set tier to backend
+    tier: backend
+

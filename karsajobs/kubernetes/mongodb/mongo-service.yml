@@ -1,0 +1,22 @@
+# use kubernetes api version v1 to create service
+apiVersion: v1
+# use Service object
+kind: Service
+# set metadata
+metadata:
+  # set metadata name to data-tier
+  name: data-tier
+  # set labels
+  labels:
+    # set app to karsajobs
+    app: karsajobs
+    # set tier to data
+    tier: data
+# set service spec
+spec:
+  # set selector
+  selector:
+    # set tier to data
+    tier: data
+  # set clusterIP to None to create Headless Service
+  clusterIP: None
