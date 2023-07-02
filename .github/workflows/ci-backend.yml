@@ -37,8 +37,5 @@ jobs:
 
       - name: build-app-karsajobs
         working-directory: ./karsajobs
-        run: sudo bash -eux ./build_push_image_karsajobs.sh
-        env:
-          GITHUB_USER: '${{ secrets.USER }}'
-          GITHUB_ACCESS_TOKEN: '${{ secrets.ACCESS_TOKEN }}'
+        run: bash -eux ./build_push_image_karsajobs.sh
 
