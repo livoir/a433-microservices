@@ -24,8 +24,11 @@ jobs:
       - name: Install Hadolint
         run: sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 && sudo chmod +x /bin/hadolint
 
+      - name: change directory karsajobs
+        run: cd karsajobs
+
       - name: lint-dockerfile
-        run: /bin/hadolint karsajobs/Dockerfile
+        run: /bin/hadolint Dockerfile
 
       - name: test-app
         run: go test -v -short --count=1 $(go list ./...)
