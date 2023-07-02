@@ -6,10 +6,9 @@ metadata:
     app: karsajobs
     tier: backend
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 8080
-      nodePort: 30001
   selector:
     tier: backend
 
