@@ -1,0 +1,7 @@
+-- order service
+https://ghcr.io/livoir/order
+https://github.com/livoir/a433-microservices/pkgs/container/order
+
+-- shipping service
+https://ghcr.io/livoir/shipping
+https://github.com/livoir/a433-microservices/pkgs/container/shipping
