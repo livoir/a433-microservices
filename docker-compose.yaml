@@ -1,0 +1,39 @@
+version: '3.8'
+
+networks:
+  backend:
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: 'rabbitmq_container'
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - backend
+
+  order:
+    image: ghcr.io/livoir/order:v1
+    container_name: order
+    restart: always
+    depends_on:
+      - rabbitmq
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+
+  shipping:
+    image: ghcr.io/livoir/shipping:v1
+    container_name: shipping
+    restart: always
+    depends_on:
+      - rabbitmq
+    ports:
+      - "3001:3001"
+    networks:
+      - backend
