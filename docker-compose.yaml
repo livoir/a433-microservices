@@ -20,6 +20,7 @@ services:
     image: ghcr.io/livoir/order:v1
     container_name: order
     restart: always
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm start'
     depends_on:
       - rabbitmq
     ports:
@@ -30,6 +31,7 @@ services:
   shipping:
     image: ghcr.io/livoir/shipping:v1
     container_name: shipping
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm start'
     restart: always
     depends_on:
       - rabbitmq
